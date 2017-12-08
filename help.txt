@@ -1,0 +1,19 @@
+添加以下参数到agentd.conf中，脚本路径根据实际情况修改
+创建mysql账户，需要查询权限
+重启zabbix客户端
+服务端导入模板
+关联需监控主机
+
+**还需要修改脚本中的用户名密码
+
+
+
+
+# 获取mysql版本
+UserParameter=mysql.version,mysql -V
+# # # 获取mysql性能指标,这个是上面定义好的脚本
+UserParameter=mysql.status[*],/usr/local/zabbix/shell/chk_mysql.sh $1
+# # # 获取mysql运行状态
+UserParameter=mysql.ping,mysqladmin -uzabbix -pzabbix -P3306 -h127.0.0.1  ping | grep -c alive
+# #
+UserParameter=mysql.slavestatus,/usr/local/zabbix/shell/chk_mysql_slave.sh
